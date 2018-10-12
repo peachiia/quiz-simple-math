@@ -18,8 +18,15 @@ void print_game_retry_bar();
 void print_game_fault_bar();
 bool is_retry_flaged();
 
+void init_game_content(int game_id);
 void render_game_content();
+
+void init_game_fibo();
 void render_game_fibo();
+void update_fibAnswer();
+bool check_fibAnswer();
+
+void init_game_easymath();
 void render_game_easymath();
 
 #define GAME_ID_MAX 2
@@ -28,17 +35,30 @@ enum GAME_ID{
     gid_easymath = 2
 };
 
+#define GAME_FIBO_LENGTH_MAX 100
+char fibA[GAME_FIBO_LENGTH_MAX];
+char fibB[GAME_FIBO_LENGTH_MAX];
+char fibAnswer[GAME_FIBO_LENGTH_MAX];
+char fibInput[GAME_FIBO_LENGTH_MAX];
+int fibA_len, fibB_len, fibAnswer_len, fibInput_len;
+
 #define FAULT_MAX 5
 int retry_counter = 0;
 int fault_counter = 0;
 
 void main()
 {
+    render_game_fibo();
+}
+
+/*
+void main()
+{
     int game_id = 0;
     print_header();
     game_id = print_menu();
     if (is_game_founded(game_id)) {
-        int fault_counter = 0;
+        fault_counter = 0;
         while (1) {
             clear_screen();
            print_game_header(game_id); 
@@ -53,6 +73,7 @@ void main()
         wait_key();
     }
 }
+*/
 
 void print_game_header(int game_id)
 {
@@ -76,6 +97,43 @@ void print_dashline()
     printf("-----------------------------\n");
 }
 
+void init_game_fibo()
+{
+    fibA[0] = '1';
+    fibB[0] = '1';
+    fibA_len = 1;
+    fibB_len = 1;
+    
+    update_fibAnswer();
+    check_fibAnswer();
+}
+
+void update_fibAnswer()
+{
+    int i = 0, buffer = 0;
+    fibAnswer_len = 0;
+    for (i = 0; i < fibB_len; i++) {
+        if (i <= fibA_len) {
+            buffer += (fibA[i]-'0') + (fibB[i]-'0');
+        }
+        else {
+            buffer += (fibB[i]-'0');
+        }
+        fibAnswer[i] = (buffer % 10) + '0';
+        buffer /= 10;
+        fibAnswer_len++;
+    }
+    if (buffer > 0) {
+        fibAnswer[fibAnswer_len] = (buffer % 10) + '0';
+        fibAnswer_len++;
+    }
+}
+
+bool check_fibAnswer()
+{
+
+}
+
 void render_game_fibo()
 {
     printf("FIBO. %d", fault_counter++);
@@ -83,6 +141,11 @@ void render_game_fibo()
     if (is_retry_flaged()) {
 
     }
+}
+
+void init_game_easymath()
+{
+
 }
 
 void render_game_easymath()
@@ -122,6 +185,20 @@ void print_game_fault_bar()
         }
     }
     printf("\n");
+}
+
+void init_game_content(int game_id)
+{
+    switch (game_id) {
+        case gid_fibo: {
+            init_game_fibo();       
+            break;   
+        } 
+        case gid_easymath: {
+            init_game_easymath();    
+            break;    
+        } 
+    }
 }
 
 void render_game_content(int game_id)
