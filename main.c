@@ -335,7 +335,8 @@ void print_header()
 
 int print_menu()
 {
-    printf("Game List\n");
+    printf("\n Game List\n");
+    printf("- - - - - -  - - -\n");
     printf("   1: Fibo Guess\n");
     printf("   2: Easy Math\n");
     printf("\n");
