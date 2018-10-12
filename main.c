@@ -10,18 +10,27 @@ char wait_key();
 void print_header();
 int  print_menu();
 void print_game_not_founded();
-
-void print_game_header(int game_id);
-void print_game_hp_bar();
-bool render_game_content();
-
 bool is_game_founded(int index);
 
-#define GAME_AVAILABLED_MAX 2
+void print_dashline();
+void print_game_header(int game_id);
+void print_game_retry_bar();
+void print_game_fault_bar();
+bool is_retry_flaged();
+
+void render_game_content();
+void render_game_fibo();
+void render_game_easymath();
+
+#define GAME_ID_MAX 2
 enum GAME_ID{
     gid_fibo = 1,
     gid_easymath = 2
 };
+
+#define FAULT_MAX 5
+int retry_counter = 0;
+int fault_counter = 0;
 
 void main()
 {
@@ -29,9 +38,13 @@ void main()
     print_header();
     game_id = print_menu();
     if (is_game_founded(game_id)) {
+        int fault_counter = 0;
         while (1) {
+            clear_screen();
            print_game_header(game_id); 
-           print_game_hp_bar();
+           print_game_retry_bar();
+           print_game_fault_bar();
+           print_dashline();
            render_game_content(game_id);
         }
     }
@@ -43,7 +56,7 @@ void main()
 
 void print_game_header(int game_id)
 {
-    printf("-----------------------------\n");  
+    print_dashline();
     switch (game_id) {
         case gid_fibo: {
             printf("    FIBONACCI CALCULATION\n"); 
@@ -55,16 +68,74 @@ void print_game_header(int game_id)
         } 
         default: printf("    Unknown Game!\n");
     }
-    printf("-----------------------------\n\n");     
+    print_dashline();
 }
 
-void print_game_hp_bar()
+void print_dashline()
 {
-
+    printf("-----------------------------\n");
 }
-bool render_game_content()
-{
 
+void render_game_fibo()
+{
+    printf("FIBO. %d", fault_counter++);
+    wait_key();
+    if (is_retry_flaged()) {
+
+    }
+}
+
+void render_game_easymath()
+{
+    printf("MATH. %d", fault_counter++);
+    wait_key();
+    if (is_retry_flaged()) {
+
+    }
+}
+
+bool is_retry_flaged()
+{
+    if (fault_counter >= FAULT_MAX) {
+        fault_counter = 0;
+        retry_counter++;
+        return true;
+    }
+    return false;
+}
+
+void print_game_retry_bar()
+{
+    printf(" Retry: %d\n", retry_counter);
+}
+
+void print_game_fault_bar()
+{
+    int i;
+    printf(" Fault: ");
+    for (i = 1; i <= FAULT_MAX; i++) {
+        if (i <= fault_counter) {
+            printf("X ");
+        }
+        else {
+            printf("_ ");
+        }
+    }
+    printf("\n");
+}
+
+void render_game_content(int game_id)
+{
+    switch (game_id) {
+        case gid_fibo: {
+            render_game_fibo();       
+            break;   
+        } 
+        case gid_easymath: {
+            render_game_easymath();    
+            break;    
+        } 
+    }
 }
 
 void clear_screen()
@@ -102,5 +173,5 @@ void print_game_not_founded()
 
 bool is_game_founded(int index)
 {
-    return (index >0 && index <= GAME_AVAILABLED_MAX);
+    return (index >0 && index <= GAME_ID_MAX);
 }
