@@ -14,13 +14,14 @@ void print_game_not_founded();
 void print_game_header(int game_id);
 void print_game_hp_bar();
 bool render_game_content();
-bool render_game_content();
-
-
 
 bool is_game_founded(int index);
 
 #define GAME_AVAILABLED_MAX 2
+enum GAME_ID{
+    gid_fibo = 1,
+    gid_easymath = 2
+};
 
 void main()
 {
@@ -29,13 +30,41 @@ void main()
     game_id = print_menu();
     if (is_game_founded(game_id)) {
         while (1) {
-
+           print_game_header(game_id); 
+           print_game_hp_bar();
+           render_game_content(game_id);
         }
     }
     else {
         print_game_not_founded();
         wait_key();
     }
+}
+
+void print_game_header(int game_id)
+{
+    printf("-----------------------------\n");  
+    switch (game_id) {
+        case gid_fibo: {
+            printf("    FIBONACCI CALCULATION\n"); 
+            break;           
+        } 
+        case gid_easymath: {
+            printf("    EASY MATH\n");
+            break;         
+        } 
+        default: printf("    Unknown Game!\n");
+    }
+    printf("-----------------------------\n\n");     
+}
+
+void print_game_hp_bar()
+{
+
+}
+bool render_game_content()
+{
+
 }
 
 void clear_screen()
