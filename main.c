@@ -50,6 +50,7 @@ int fibOrder = 0;
 int retry_counter = 0;
 int fault_counter = 0;
 
+/*
 void main()
 {
     init_game_fibo();
@@ -57,8 +58,8 @@ void main()
         render_game_fibo();
     }
 }
+*/
 
-/*
 void main()
 {
     int game_id = 0;
@@ -66,13 +67,14 @@ void main()
     game_id = print_menu();
     if (is_game_founded(game_id)) {
         fault_counter = 0;
+        init_game_content(game_id);
         while (1) {
             clear_screen();
-           print_game_header(game_id); 
-           print_game_retry_bar();
-           print_game_fault_bar();
-           print_dashline();
-           render_game_content(game_id);
+            print_game_header(game_id); 
+            print_game_retry_bar();
+            print_game_fault_bar();
+            print_dashline();
+            render_game_content(game_id);
         }
     }
     else {
@@ -80,7 +82,6 @@ void main()
         wait_key();
     }
 }
-*/
 
 void print_game_header(int game_id)
 {
@@ -172,8 +173,7 @@ bool print_fibText(char fibText[], int fibLen)
 
 void render_game_fibo()
 {
-    printf("FIBO.");
-    printf("\n%5d: ", fibOrder-2);
+    printf("%5d: ", fibOrder-2);
     print_fibText(fibA, fibA_len);
 
     printf("\n%5d: ", fibOrder-1);
@@ -185,11 +185,10 @@ void render_game_fibo()
     printf("\n Answer: ");
     scanf("%s", &fibInput);
     if (check_fibAnswer()) {
-        printf("True");
         update_next_fib();
     }
     else {
-        printf("False");
+        printf("\a");
         fault_counter++;
     }
     if (is_retry_flaged()) {
