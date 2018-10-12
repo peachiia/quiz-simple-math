@@ -1,5 +1,5 @@
-// Simple Math Game for MWIT's Student Project
-// Dev: Pongsakorn Wechakarn
+// Simple Math Game for MWIT Student's Project
+// Dev: Peachiia
 // Env: TDM-GCC 4.92. (MinGW64)
 
 #include <stdio.h>
@@ -131,6 +131,21 @@ void update_fibAnswer()
 
 bool check_fibAnswer()
 {
+    int i;
+    if (strlen(fibInput) == fibAnswer_len) {
+        for (i = 0; i < fibAnswer_len; i++) {
+            if (fibAnswer[i] != fibInput[(fibAnswer_len-1)-i]) {
+                break;
+            }
+        }
+        if ( i == fibAnswer_len) {
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
+}
 
 }
 
