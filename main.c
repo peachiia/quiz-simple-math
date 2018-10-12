@@ -26,6 +26,7 @@ void init_game_fibo();
 void render_game_fibo();
 void update_fibAnswer();
 bool check_fibAnswer();
+void update_next_fib();
 bool print_fibText(char fibText[], int fibLen);
 
 void init_game_easymath();
@@ -52,7 +53,9 @@ int fault_counter = 0;
 void main()
 {
     init_game_fibo();
-    render_game_fibo();
+    while(1) {
+        render_game_fibo();
+    }
 }
 
 /*
@@ -117,7 +120,7 @@ void update_fibAnswer()
     int i = 0, buffer = 0;
     fibAnswer_len = 0;
     for (i = 0; i < fibB_len; i++) {
-        if (i <= fibA_len) {
+        if (i < fibA_len) {
             buffer += (fibA[i]-'0') + (fibB[i]-'0');
         }
         else {
@@ -128,7 +131,7 @@ void update_fibAnswer()
         fibAnswer_len++;
     }
     if (buffer > 0) {
-        fibAnswer[fibAnswer_len] = (buffer % 10) + '0';
+        fibAnswer[fibAnswer_len] = buffer + '0';
         fibAnswer_len++;
     }
 }
@@ -149,6 +152,14 @@ bool check_fibAnswer()
     return false;
 }
 
+void update_next_fib()
+{
+    memcpy(fibA, fibB, sizeof(char) * fibB_len);
+    fibA_len = fibB_len;
+    memcpy(fibB, fibAnswer, sizeof(char) * fibAnswer_len);
+    fibB_len = fibAnswer_len;
+    update_fibAnswer();
+    fibOrder++;
 }
 
 bool print_fibText(char fibText[], int fibLen) 
@@ -168,20 +179,21 @@ void render_game_fibo()
     printf("\n%5d: ", fibOrder-1);
     print_fibText(fibB, fibB_len);
     
-    printf("\n    Answer: ");
-    print_fibText(fibAnswer, fibAnswer_len);
+    //printf("\n Actual Answer: ");
+    //print_fibText(fibAnswer, fibAnswer_len);
 
-    printf("\n Next Fib: ");
+    printf("\n Answer: ");
     scanf("%s", &fibInput);
     if (check_fibAnswer()) {
         printf("True");
+        update_next_fib();
     }
     else {
         printf("False");
         fault_counter++;
     }
     if (is_retry_flaged()) {
-
+        init_game_fibo();
     }
 }
 
