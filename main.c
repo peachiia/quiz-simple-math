@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
+#include <stdlib.h>
 
 void clear_screen();
 char wait_key();
@@ -45,6 +47,10 @@ char fibAnswer[GAME_FIBO_LENGTH_MAX];
 char fibInput[GAME_FIBO_LENGTH_MAX];
 int fibA_len, fibB_len, fibAnswer_len;
 int fibOrder = 0;
+
+int score_current = 0;
+int score_hightest = 0;
+
 
 #define FAULT_MAX 5
 int retry_counter = 0;
@@ -198,16 +204,58 @@ void render_game_fibo()
 
 void init_game_easymath()
 {
-
+    srand(time(NULL));
 }
 
 void render_game_easymath()
 {
-    printf("MATH. %d", fault_counter++);
-    wait_key();
-    if (is_retry_flaged()) {
+    int A = (rand() % 99) + 1;
+    int B = (rand() % 99) + 1;
+    int answer = 0;
+    int input;
+    char operator;
 
+    switch (rand() % 3) {
+        case 0: {
+            operator = '+';
+            answer = A + B;
+            break;
+        }
+        case 1: {
+            operator = '-';
+            answer = A - B;
+            break;
+        }
+        case 2: {
+            operator = 'x';
+            answer = A * B;
+            break;
+        }
     }
+
+    printf("  Hightest Score: %d\n", score_hightest);
+    printf("  Current: %d\n", score_current);
+    print_dashline();
+
+    printf("  %d %c %d = ", A, operator, B);
+    scanf("%d", &input);
+    if (input == answer) {
+        printf(" OK!");
+        score_current++;
+        if (score_current > score_hightest) {
+            score_hightest = score_current;
+        }
+    }
+    else {
+        printf(" Wrong Number !!! ");
+        fault_counter++;
+    }
+    
+    if (is_retry_flaged()) {
+        printf("  Sorry, Your Score is going to be reset.\n  Please try again.");
+        score_current = 0;
+    }
+    wait_key();
 }
 
 bool is_retry_flaged()
