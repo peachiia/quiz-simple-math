@@ -42,7 +42,8 @@ char fibA[GAME_FIBO_LENGTH_MAX];
 char fibB[GAME_FIBO_LENGTH_MAX];
 char fibAnswer[GAME_FIBO_LENGTH_MAX];
 char fibInput[GAME_FIBO_LENGTH_MAX];
-int fibA_len, fibB_len, fibAnswer_len, fibInput_len;
+int fibA_len, fibB_len, fibAnswer_len;
+int fibOrder = 0;
 
 #define FAULT_MAX 5
 int retry_counter = 0;
@@ -50,6 +51,7 @@ int fault_counter = 0;
 
 void main()
 {
+    init_game_fibo();
     render_game_fibo();
 }
 
@@ -101,13 +103,13 @@ void print_dashline()
 
 void init_game_fibo()
 {
+    fibOrder = 3;
     fibA[0] = '1';
     fibB[0] = '1';
     fibA_len = 1;
     fibB_len = 1;
     
     update_fibAnswer();
-    check_fibAnswer();
 }
 
 void update_fibAnswer()
@@ -144,9 +146,9 @@ bool check_fibAnswer()
             return true;
         }
     }
-    else {
-        return false;
-    }
+    return false;
+}
+
 }
 
 bool print_fibText(char fibText[], int fibLen) 
@@ -159,8 +161,25 @@ bool print_fibText(char fibText[], int fibLen)
 
 void render_game_fibo()
 {
-    printf("FIBO. %d", fault_counter++);
-    wait_key();
+    printf("FIBO.");
+    printf("\n%5d: ", fibOrder-2);
+    print_fibText(fibA, fibA_len);
+
+    printf("\n%5d: ", fibOrder-1);
+    print_fibText(fibB, fibB_len);
+    
+    printf("\n    Answer: ");
+    print_fibText(fibAnswer, fibAnswer_len);
+
+    printf("\n Next Fib: ");
+    scanf("%s", &fibInput);
+    if (check_fibAnswer()) {
+        printf("True");
+    }
+    else {
+        printf("False");
+        fault_counter++;
+    }
     if (is_retry_flaged()) {
 
     }
