@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 void clear_screen();
 char wait_key();
@@ -25,6 +26,7 @@ void init_game_fibo();
 void render_game_fibo();
 void update_fibAnswer();
 bool check_fibAnswer();
+bool print_fibText(char fibText[], int fibLen);
 
 void init_game_easymath();
 void render_game_easymath();
@@ -147,6 +149,12 @@ bool check_fibAnswer()
     }
 }
 
+bool print_fibText(char fibText[], int fibLen) 
+{
+    int i;
+    for (i = fibLen-1; i >= 0; i--) {
+        printf("%c", fibText[i]);
+    }
 }
 
 void render_game_fibo()
