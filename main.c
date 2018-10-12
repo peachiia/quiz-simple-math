@@ -92,7 +92,7 @@ void print_game_header(int game_id)
             break;           
         } 
         case gid_easymath: {
-            printf("    EASY MATH\n");
+            printf("          EASY MATH\n");
             break;         
         } 
         default: printf("    Unknown Game!\n");
@@ -280,8 +280,9 @@ char wait_key()
 
 void print_header()
 {
-    printf("    Simple Game\n");
-    printf("-------------------\n\n");
+    print_dashline();
+    printf("          Simple Game\n");
+    print_dashline();
 }
 
 int print_menu()
